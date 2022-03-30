@@ -39,7 +39,30 @@ async function create_user(email, name, password) {
 
 }
 
+async function get_users() {
+    const client = await pool.connect()
+
+    const { rows } = await client.query('select * from users order by id')
+
+    client.release()
+
+    return rows
+}
+
+async function set_auth(user_id, new_auth) {
+    const client = await pool.connect()
+
+    await client.query({
+        text: 'update users set auth=$2 where id=$1',
+        values: [parseInt(user_id), new_auth]
+    })
+
+    client.release()
+}
+
 module.exports = {
     get_user,
-    create_user
+    create_user,
+    get_users,
+    set_auth
 }

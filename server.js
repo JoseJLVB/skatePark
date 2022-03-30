@@ -35,7 +35,8 @@ app.use(fileupload({
     responseOnLimit: 'El peso del archivo supera el máximo (5Mb)'
 }))
 //importacion de rutas
-app.use(require('./routes.js'))
+app.use(require('./routes/auth.js'))
+app.use(require('./routes/routes.js'))
 
 //inicio de servidor
 const PORT = 3000
