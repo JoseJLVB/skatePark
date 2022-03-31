@@ -1,4 +1,4 @@
-const { Pool } = require('pg')
+const { Pool } = require ('pg');
 
 const pool = new Pool({
     user: 'postgres',
@@ -15,7 +15,7 @@ async function get_user(email) {
     const client = await pool.connect()
 
     const { rows } = await client.query({
-        text: 'select * from users where email=$1',
+        text: 'select * from skaters where email=$1',
         values: [email]
     })
     client.release ()
@@ -27,12 +27,12 @@ async function get_user(email) {
 
 }
 
-async function create_user(email, name, password) {
+async function create_user(email, nombre, password, experiencia, especialidad, foto, estado) {
     const client = await pool.connect()
 
     await client.query({
-        text: 'insert into users (email, name, password) values ($1, $2, $3)',
-        values: [email, name, password]
+        text: 'insert into skaters (email, nombre, password, anos_experiencia, especialidad, foto, estado) values ($1, $2, $3, $4, $5, $6, $7)',
+        values: [email, nombre, password, experiencia, especialidad, foto, true]
     })
 
     client.release()
@@ -42,19 +42,21 @@ async function create_user(email, name, password) {
 async function get_users() {
     const client = await pool.connect()
 
-    const { rows } = await client.query('select * from users order by id')
+    const { rows } = await client.query('select * from skaters order by id')
 
     client.release()
 
     return rows
 }
 
-async function set_auth(user_id, new_auth) {
+
+
+async function set_estado(user_id, new_estado) {
     const client = await pool.connect()
 
     await client.query({
-        text: 'update users set auth=$2 where id=$1',
-        values: [parseInt(user_id), new_auth]
+        text: 'update skaters set estado=$2 where id=$1',
+        values: [parseInt(user_id), new_estado]
     })
 
     client.release()
@@ -64,5 +66,5 @@ module.exports = {
     get_user,
     create_user,
     get_users,
-    set_auth
+    set_estado
 }
