@@ -1,5 +1,6 @@
 const express = require('express')
-const { get_users, set_estado, get_user } = require('../db.js')
+const bcrypt = require('bcrypt')
+const { get_users, set_estado, get_user, update_user } = require('../db.js')
 
 const router = express.Router()
 
@@ -32,7 +33,7 @@ router.get('/datos', protected_routes, async (req, res) => {
     res.render('datos.html', { user, users })
 })
 
-router.post('datos', protected_routes, async(req,res) => {
+router.post('/datos', protected_routes, async(req,res) => {
     const email = req.session.user.email
     const name = req.body.name
     const password = req.body.password
@@ -53,8 +54,8 @@ router.post('datos', protected_routes, async(req,res) => {
 
     const password_encrypt = await bcrypt.hash(password, 10)
 
-    await update(email, name, password_encrypt, parseInt(years), speciality)
-    req.session.user = {email, name, years, speciality}
+    await update_user(email, name, password_encrypt, parseInt(years), speciality)
+    req.session.user = { email, name, password, years, speciality }
     res.redirect('/')
 })
 
@@ -66,5 +67,7 @@ router.put('/users/:id', async (req, res) => {
 
     res.json({todo: 'ok'})
 })
+
+
 
 module.exports = router

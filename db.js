@@ -62,9 +62,34 @@ async function set_estado(user_id, new_estado) {
     client.release()
 }
 
+async function update_user(email, nombre, password, experiencia, especialidad) {
+    const client = await pool.connect()
+
+    await client.query({
+        text: 'update  skaters set nombre=$2, password=$3, anos_experiencia=$4, especialidad=$5 where email=$1',
+        values: [email, nombre, password, experiencia, especialidad]
+    })
+
+    client.release()
+
+}
+
+async function delete_user(id) {
+    const client = await pool.connect()
+
+    await client.query({
+        text: 'delete from skaters where id=$1',
+        values: [id]
+    })
+
+    client.release()
+}
+
 module.exports = {
     get_user,
     create_user,
     get_users,
-    set_estado
+    set_estado,
+    update_user,
+    delete_user
 }

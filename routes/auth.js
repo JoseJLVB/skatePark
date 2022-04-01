@@ -1,6 +1,6 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
-const { get_user, create_user } = require('../db.js')
+const { get_user, create_user, delete_user } = require('../db.js')
 
 const router = express.Router()
 
@@ -73,13 +73,20 @@ router.post('/registro', async (req, res) => {
     await picstore.mv(`images/${picture}`);
     
     const password_encrypt = await bcrypt.hash(password, 10)
-    console.log(name);
+    
     await create_user(email, name, password_encrypt, years, speciality, picture)
 
     // 4. Guardo el nuevo usuario en sesión
     req.session.user = { name, email, password }
     res.redirect('/')
 });
+
+router.get('/delete', async(req, res) => {
+  const email = req.session.user.email
+  await delete_user(email)
+  
+})
+
 
 router.get('/logout', (req, res) => {
   // 1. Eliminamos al usuario de la sesión
