@@ -21,10 +21,12 @@ router.get('/admin', protected_routes, async (req, res) => {
     res.render('admin.html', { user, users })
 });
 
-router.get('/', protected_routes, (req, res) => {
+router.get('/', protected_routes, async (req, res) => {
     const user = req.session.user
+    const users = await get_users()
 
-    res.render('index.html', { user })
+
+    res.render('index.html', { user, users })
 });
 
 router.get('/datos', protected_routes, async (req, res) => {

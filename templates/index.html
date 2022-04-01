@@ -4,7 +4,6 @@
 {% block main %}
   {{ navbar('/') }}
 
-
   <div class="py-4">
     <h2>Lista de participantes</h2>
     
@@ -20,7 +19,6 @@
         </tr>
       </thead>
       <tbody>
-        
         {% for user in users %}
           <tr>
             <th scope="row">{{user.id}}</th>
@@ -42,7 +40,6 @@
     </table>
     <a href="/login">Iniciar Sesión</a> |
     <a href="/registro">Registrarme</a>
-  </div>
-  
+  </div>  
 {% endblock %}
 
