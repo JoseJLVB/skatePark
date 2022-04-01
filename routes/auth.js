@@ -84,6 +84,8 @@ router.post('/registro', async (req, res) => {
 router.get('/delete', async(req, res) => {
   const email = req.session.user.email
   await delete_user(email)
+
+  res.redirect('/login')
   
 })
 

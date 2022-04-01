@@ -74,12 +74,12 @@ async function update_user(email, nombre, password, experiencia, especialidad) {
 
 }
 
-async function delete_user(id) {
+async function delete_user(email) {
     const client = await pool.connect()
 
     await client.query({
-        text: 'delete from skaters where id=$1',
-        values: [id]
+        text: 'delete from skaters where email=$1',
+        values: [email]
     })
 
     client.release()
